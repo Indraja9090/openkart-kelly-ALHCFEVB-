@@ -1,0 +1,17 @@
+<!-- <a (click)="onItemClicked()" class="list-group-item clearfix"> -->
+
+    <a [routerLink]="index" routerLinkActive="active" 
+            style="cursor: pointer;" class="list-group-item clearfix">
+        <div class="pull-left">
+            <h4 class="list-group-item-heading">{{ product.name }}</h4>
+            <p class="list-group-item-text">{{ product.description }}</p>
+        </div>
+        <span class="label label-primary">{{ product.price }}</span>
+        <span class="pull-right">
+            <div class='row'>
+                <img [src]="product.imagePath" alt="{{ product.name }}"
+                class="img-responsive" style="max-height: 5" width="50" height="30">
+                <span class="label label-default">{{ product.brand }}</span>
+            </div>
+        </span>
+    </a>

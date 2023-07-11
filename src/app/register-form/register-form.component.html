@@ -1,0 +1,46 @@
+<!--Implementing #referencename on HTML element-->
+<div class="row">
+    <div class="col-xs-4">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <!-- #nameRef is the name given to this <input> element-->
+            <!--we can use this #nameRef to other HTML elements within this file html Template -->
+            <!-- #nameRef can,t be directly used in respective component class.
+                Hence #nameRef can,
+                 either be passed as arguments to component class function() 
+                 or can be delcared as @ViewChild('nameReference') nameRef: ElementRef-->
+            <input type="text" id="name" class="form-control" #nameReference>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" id="email" class="form-control" #emailReference>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4">
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" #passwordReference>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4">
+        <div class="form-group">
+            <label for="mobile">Mobile</label>
+            <input type="text" id="mobile" class="form-control" #mobileReference>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+                                        <!--Passing #nameRef as argument to component class function-->
+        <button type="button" class="btn btn-success" (click)="onRegister(nameReference)">Register</button>
+    </div>
+</div>
+

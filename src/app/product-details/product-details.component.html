@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-xs-12">
+        <img *ngIf="clickedProduct"
+        [src]="clickedProduct.imagePath" class="img-responsive">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h2 *ngIf="clickedProduct">{{clickedProduct.name}}</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="dropdown" appManage> <!--<div class="dropdown" [appManage]="key: value">-->
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button">
+<!--Change above two lines,
+    if dropdown menu in UI should be opened by default.
+    To close the defaultly opened dropdown menu at UI we manully remove html class property 'open' at console section-->
+<!--  <div class="dropdown open"> or <div class="btn-group open">
+      <button class="btn btn-primary dropdown-toggle" type="button"> -->
+<!--  We use Custome Directive to avoid this manual removing of html class 'open' -->
+                Manage
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu ">
+                <li><a href="#">Delete Product</a></li>
+                <li><a href="#">Edit Product</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-xs-12">
+        <h3 *ngIf="clickedProduct">{{clickedProduct.description}}</h3>
+    </div>
+</div>

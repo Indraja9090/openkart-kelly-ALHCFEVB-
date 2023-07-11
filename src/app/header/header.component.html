@@ -1,0 +1,59 @@
+<!-- .navbar-default === this creates a navigation bar with a default styling provided by the Bootstrap framework.-->
+<nav class="navbar navbar-inverse">
+    <!-- .container-fluid === This creates a full-width container to hold the navigation bar.-->
+    <div class ="container-fluid">
+        <!-- .navbar-header === This creates a container for the header of the navigation bar-->
+        <div class="navbar-header">
+            <!--This creates a button that toggles the collapse of the navigation bar on smaller screens.
+                The 'data-target' attribute specifies the ID of the navigation bar that will be collapsed.-->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#openkart111">
+                <!-- .icon-bar === This creates the three horizontal bars that appear in the collapsed button.
+                     These are created three times to represent three bars.-->
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- .navbar-brand and  href="#" === This creates a link with the branding of the website or application.-->
+            <a class="navbar-brand" href="#">Openkart</a>
+        </div>
+        <!-- Below code creates a container for the navigation links that will be collapsed or expanded.-->
+        <div class="collapse navbar-collapse" id="openkart111">
+            <!-- Below code creates an unordered list of navigation links.-->
+            <ul class="nav navbar-nav">
+                <!--Below code creates a navigation link to the home page of the website,
+                    with the "active" class indicating that this is the current page.-->
+
+                <!--<li class="active"><a (click)="onNavItemClicked('Home')">Home</a></li>-->   
+                <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/">Home</a></li>         
+               
+                <li routerLinkActive="active"><a routerLink="/products">ProductList</a></li>
+                
+                 <li routerLinkActive="active"><a routerLink="/orders">Orders</a></li>
+                
+                <li routerLinkActive="active"><a routerLink="/register">Register</a></li>
+                
+                <li routerLinkActive="active"><a routerLink="/contact">Contact</a></li>
+
+                <!--Below code creates a dropdown navigation link with the "Page 1" label and a caret icon. 
+                    Clicking on this link will reveal a dropdown menu of sub-links.-->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+                <!--Below code creates a container for the sub-links of the dropdown menu.-->
+                    <ul class="dropdown-menu">
+                    <!-- Below code creates a sub-link for the "Page 1" dropdown menu.-->
+                        <li><a href="#">Page 1-1</a></li>
+                        <li><a href="#">Page 1-2</a></li>
+                        <li><a href="#">Page 1-3</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Below code creates an unordered list of navigation links on the right side of the navigation bar.-->
+            <ul class="nav navbar-nav navbar-right">
+                <!--Below code creates a navigation link to the 'sign-up' page with a user icon.-->
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <!--Below code creates a navigation link to the 'Login' page with a Login icon.-->
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,43 @@
+<!-- header component click event onHeaderClickEvent with string value emitted to app component and,
+     app comonent function onAppHeaderClick() is listening to onHeaderClickEvent event value-->
+<!--
+<app-header (onHeaderClickEvent)="onAppHeaderClick($event)"></app-header>
+<h1>Welcome to Openkart</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <app-product-list *ngIf="selectLink=='productList'">
+                            //(selectedProductItem)="onSelectedProductItem($event)"
+                    //(product list compnt property @Output()  = "app compnt click event function")
+            </app-product-list><br>
+                         
+        </div>
+        <div class="col-md-7">
+            <app-product-details *ngIf="selectLink=='productList'" 
+                                  [clickedProduct]="selectedProduct"></app-product-details> 
+                     // [product-details compnt @Input() var] = "app compnt property" 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <app-order-list *ngIf="selectLink=='orders'"></app-order-list>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <app-register-form *ngIf="selectLink=='register'"></app-register-form>
+        </div>
+    </div>
+</div>
+-->
+
+<app-header></app-header>
+<h1>Welcome to Openkart</h1>
+<div style="margin: 0px 50px">
+    <div class="row">
+        <div class="col-ms-5">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+ 

@@ -1,0 +1,28 @@
+<div calss="container">
+    <div class='row'>
+        <div class='col-xs-6'>
+            <button class='btn btn-success'>New Product</button>
+            <button class='btn btn-warning'>New Product</button>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-xs-6'>
+            <button class='btn btn-success'>New Product</button>
+            <button class='btn btn-warning'>New Product</button>
+        </div>
+    </div>
+    <hr>
+    <div class='row'>
+        <div class="col-xs-4">                           
+            <app-product-item *ngFor="let p of products; let i = index" 
+                            [product]="p"
+                            [index]="i">
+                        <!-- //(selectedItem)="onItemSelected(p)"  
+    //product-item compnt property @Output() event = "product-list click event function"  -->
+            </app-product-item>
+        </div>
+        <div class="col-xs-8">
+            <router-outlet></router-outlet>  
+        </div>             
+    </div>
+</div>
