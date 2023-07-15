@@ -12,10 +12,14 @@ pipeline {
             }
         }
         
-        stage('Docker Check') {
+        stage('Docker Setup') {
             steps {
                 script {
-                    echo "Checking Docker...."
+                    echo "Setting Up Docker...."
+                    def dockerHome = tool 'MyDocker'
+                    echo "${dockerHome}"
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                    echo "Docker setup has done"
                     sh "docker --version"
                     sh "whoami"
                 }
