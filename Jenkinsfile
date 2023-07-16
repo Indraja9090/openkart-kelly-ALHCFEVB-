@@ -54,7 +54,7 @@ pipeline {
                     def customImage = docker.build("indraja12345docker/openkart_jenkins:${env.BUILD_ID}")
                                                          // `env.BUILD_ID` has the latest Build number that generated whenever we did `Build Now` on jenkins pipeline
                     echo "Pushing image to our DockerHub Account"
-                    withCredentials([usernamePassword(credentialsId: 'JenkinsDocker', usernameVariable: 'JenkinsDockerUsername' passwordVariable: 'JenkinsDockerPassword')])
+                    withCredentials([usernamePassword(credentialsId: 'JenkinsDocker', usernameVariable: 'JenkinsDockerUsername', passwordVariable: 'JenkinsDockerPassword')])
                     {
                         sh "docker login -u ${env.JenkinsDockerUsername} -p ${env.JenkinsDockerPassword}"
                         sh "docker push indraja12345docker/openkart_jenkins:${env.BUILD_ID}"
