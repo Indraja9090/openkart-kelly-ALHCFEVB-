@@ -3,24 +3,30 @@
 pipeline {
     agent any 
     stages {
-        stage('CheckOutGit') {
+        stage('CheckOut GitHUb Repo') {
             steps {
             echo "cloning the openkart project Repo form GitHub to container"
             checkout scm
             echo "Successfully clones the openkart project from our GitHub Repo"
-            sh "ls -lrth"
+            sh "ls -lrth"   // Lists all the file in GitHub Repo 
             }
         }
-        
+
         stage('Docker Setup') {
             steps {
                 script {
                     echo "Setting Up Docker...."
-                    def dockerHome = tool 'MyDocker'     //uses the `tool` to retrieve the Docker tool installation named 'MyDocker.' 
-                                                        // assumes that we have configured,
-                                                    //              a Docker tool installation in the Jenkins global tool configuration with the name 'MyDocker.'
+                    //uses the `tool` step to retrieve the Docker tool installation named 'MyDocker.' 
+                    // assumes that we have configured, a Docker tool installation in the Jenkins global tool configuration with the name 'MyDocker.'
+                    def dockerHome = tool 'MyDocker'     // We can see at console logs of pipeline(i.e.,  openkart_build_openkart in localhost:8080),
+                                                            //            ``````|`````
+                                                            //   `Downloading Docker client latest` 
+                                                            //   `Unpacking https://get.docker.com/builds/Linux/x86_64/doccker-latest.tgz   to   /var/jenkins_home/..../MyDocker`                               
                     echo "${dockerHome}"    //Prints the path to the Docker tool installation.
+                    // OUTPUT:  /var/jenkins_home/tools/org.jenkinsci.plugins.docker.commons.tools.DockerTool/MyDocker
+                    sh "ls ${dockerHome}"
                     echo "${env.PATH}"
+                    // OUTPUT: /opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
                     // `env` is a special variable in Jenkins that represents the environment variables for the current pipeline execution. 
                     // `PATH` is the specific environment variable we want to update.
@@ -29,11 +35,31 @@ pipeline {
                                                                 // `dockerHome}/bin` ----- path to the directory where the Docker executable is expected to be found.
                                                                 // `dockerHome` represents the Docker installation directory
                                                                 // `bin` is the subdirectory where the Docker executable resides.
-                                                                //appends the existing PATH value to the new Docker executable path.
+                                                                //`${env.PATH}`  appends the existing PATH value to the new Docker executable path.
+                                                                //The colon (:) separates different directories in the PATH variable.
                     echo "${env.PATH}"
-                    echo "Docker setup has done"
-                    sh "docker --version"
-                    sh "whoami"
+                    /* OUTPUT: /var/jenkins_home/tools/org.jenkinsci.plugins.docker.commons.tools.DockerTool/MyDocker
+                                                            /bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin        */
+                    echo "Docker setup has done"        
+                    sh "docker --version"       //Comamnd returns ---- Docker version 17.05.0-ce, build 89658be
+                    sh "whoami"     // Command returns --- jenkins
+                }
+            }
+        }
+
+        stage('Building Docker Image') {
+            steps {
+                script {
+                    // Telling jenkins to Build Docker image in our DockerHub Account with provided name
+                    def customImage = docker.build("indraja12345docker/openkart_jenkins:${env.BUILD_ID}")
+                                                         // `env.BUILD_ID` has the latest Build number that generated whenever we did `Build Now` on jenkins pipeline
+                    echo "Pushing image to our DockerHub Account"
+                    withCredentials([usernamePassword(credentialsId: 'JenkinsDocker', usernameVariable: 'JenkinsDockerUsername' passwordVariable: 'JenkinsDockerPassword')])
+                    {
+                        sh "docker login -u ${env.JenkinsDockerUsername} -p ${env.JenkinsDockerPassword}"
+                        sh "docker push indraja12345docker/openkart_jenkins:${env.BUILD_ID}"
+
+                    }
                 }
             }
         }
