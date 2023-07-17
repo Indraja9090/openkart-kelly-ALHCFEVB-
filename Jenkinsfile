@@ -50,14 +50,25 @@ pipeline {
         stage('Building Docker Image') {
             steps {
                 script {
-                    // Telling jenkins to Build Docker image in our DockerHub Account with provided name
+                    // instructs Jenkins to build a Docker image using the Dockerfile found in the current workspace directory.
+                    // resulting image is tagged with the name "indraja12345docker/openkart_jenkins" followed by the Jenkins environment variable `BUILD_ID`
                     def customImage = docker.build("indraja12345docker/openkart_jenkins:${env.BUILD_ID}")
                                                          // `env.BUILD_ID` has the latest Build number that generated whenever we did `Build Now` on jenkins pipeline
+                                                         //`docker.build() ---->    docker build -t indraja12345docker/openkart_jenkins:7 .
                     echo "Pushing image to our DockerHub Account"
+                    //provide Docker Hub credentials to the Jenkins pipeline securely.
+                    //`withCredentials` block allows you to use Jenkins credentials (e.g., username and password) stored in the Jenkins Credentials plugin. 
+                    /* `withCredentials` is a built-in Jenkins Pipeline step 
+                                that is used to securely access and use credentials stored in the Jenkins Credentials plugin*/
+                    /* the credentials are identified by the ID "JenkinsDocker," and 
+                            the corresponding username and password are made available as environment variables `JenkinsDockerUsername` and `JenkinsDockerPassword`.*/
                     withCredentials([usernamePassword(credentialsId: 'JenkinsDocker', usernameVariable: 'JenkinsDockerUsername', passwordVariable: 'JenkinsDockerPassword')])
-                    {
+                    {   
+                        /*The ${env.JenkinsDockerUsername} and ${env.JenkinsDockerPassword} variables are replaced with
+                                         the actual Docker Hub username and password obtained from the withCredentials block.*/
                         sh "docker login -u ${env.JenkinsDockerUsername} -p ${env.JenkinsDockerPassword}"
                         sh "docker push indraja12345docker/openkart_jenkins:${env.BUILD_ID}"
+                        sh "docker run -it -p 4200:4200 indraja12345docker/openkart_jenkins:${env.BUILD_ID}"
 
                     }
                 }
@@ -66,20 +77,34 @@ pipeline {
     }
 }
 
-// NOTE:
-//     The `checkout scm` fetches  the source code from your GitHub repository and places it in the Jenkins workspace.
-//              The Jenkins workspace is a directory on the Jenkins agent where the pipeline is executed.
-//              When you run the Jenkins job, Jenkins automatically creates a workspace for that job on the agent.
-//                  For example, if your GitHub repository is named "my-angular-project," 
-//                              the code will be checked out to a directory called "my-angular-project" within the Jenkins workspace.
 //----------------------------
-// Stages: Represent distinct phases or steps in your pipeline.
-//             stage('Docker Setup'): This defines a stage in the Jenkins pipeline called "Docker Setup." 
+/*Stages: Represent distinct phases or steps in your pipeline.
+            stage('Docker Setup'): This defines a stage in the Jenkins pipeline called "Docker Setup." 
 
-// steps: This block contains the steps to be executed within the stage.
+steps: This block contains the steps to be executed within the stage.
 
-// script: This block allows you to run arbitrary Groovy code within the pipeline. It's useful for more complex logic or dynamic behavior
+script: This block allows you to run arbitrary Groovy code within the pipeline. It's useful for more complex logic or dynamic behavior
 
-//The PATH is an environment variable that contains a list of directories. 
-            //When you run a command in the terminal or in a pipeline, 
-            //                      the system searches for the command executable file within the directories listed in the PATH variable.
+The PATH is an environment variable that contains a list of directories. 
+            When you run a command in the terminal or in a pipeline, 
+                                 the system searches for the command executable file within the directories listed in the PATH variable. */
+//----------------
+/* `usernamePassword`: This is the type of credential being accessed. 
+    Jenkins supports various types of credentials, 
+                    such as username/password pairs, secret text, SSH keys, certificates, etc.
+     In this case, it's referring to a username/password pair.
+     
+     `usernameVariable`: This is a user-defined string that represents the name of the environment variable 
+                    that will store the username part of the credentials retrieved from the Jenkins Credentials plugin.
+                    Jenkins fetches the username associated with the specified credentialsId and stores it in the variable you define here. 
+                    
+    `passwordVariable`: This is also a user-defined string that represents the name of the environment variable 
+                    that will store the password part of the credentials retrieved from the Jenkins Credentials plugin.
+                    Jenkins fetches the password associated with the specified `credentialsId` and stores it in the variable you define here. */
+//---------------------------
+/* NOTE:
+    The `checkout scm` fetches  the source code from your GitHub repository and places it in the Jenkins workspace.
+             The Jenkins workspace is a directory on the Jenkins agent where the pipeline is executed.
+             When you run the Jenkins job, Jenkins automatically creates a workspace for that job on the agent.
+                 For example, if your GitHub repository is named "my-angular-project," 
+                             the code will be checked out to a directory called "my-angular-project" within the Jenkins workspace.*/
