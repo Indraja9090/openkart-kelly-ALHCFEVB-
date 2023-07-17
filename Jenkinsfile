@@ -68,7 +68,7 @@ pipeline {
                                          the actual Docker Hub username and password obtained from the withCredentials block.*/
                         sh "docker login -u ${env.JenkinsDockerUsername} -p ${env.JenkinsDockerPassword}"
                         sh "docker push indraja12345docker/openkart_jenkins:${env.BUILD_ID}"
-                        sh "docker run -it -p 4200:4200 indraja12345docker/openkart_jenkins:${env.BUILD_ID}"
+                        sh "docker run -p 4200:4200 indraja12345docker/openkart_jenkins:${env.BUILD_ID}"
 
                     }
                 }
